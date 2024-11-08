@@ -32,15 +32,26 @@ jobs:
     steps:
       - name: checkout code
         uses: https://eoelab.org:1027/actions/checkout@v4
-      - name: CUDA_Runtime build
+      - name: CUDA_Devel build
         uses: https://eoelab.org:1027/actions/build-push-action@v6
         with:
           context: cuda/devel
           tags: eoelab.org:1027/${{ gitea.repository }}:cuda_devel
 
+  ROCM:
+    runs-on: runner
+    steps:
+      - name: checkout code
+        uses: https://eoelab.org:1027/actions/checkout@v4
+      - name: ROCM build
+        uses: https://eoelab.org:1027/actions/build-push-action@v6
+        with:
+          context: rocm
+          tags: eoelab.org:1027/${{ gitea.repository }}:rocm
+
   Push:
     runs-on: runner
-    needs: [CUDA_Devel]
+    needs: [CUDA_Devel, ROCM]
     steps:
       - name: login gitea_registry
         uses: https://eoelab.org:1027/actions/login-action@v3
