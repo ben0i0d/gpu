@@ -1,0 +1,52 @@
+name: Build
+
+on: [push]
+
+jobs:
+  CUDA_Base:
+    runs-on: runner
+    steps:
+      - name: checkout code
+        uses: https://eoelab.org:1027/actions/checkout@v4
+      - name: CUDA_Base build
+        uses: https://eoelab.org:1027/actions/build-push-action@v6
+        with:
+          context: cuda/base
+          tags: eoelab.org:1027/${{ gitea.repository }}:cuda_base
+  
+  CUDA_Runtime:
+    runs-on: runner
+    needs: CUDA_Base
+    steps:
+      - name: checkout code
+        uses: https://eoelab.org:1027/actions/checkout@v4
+      - name: CUDA_Runtime build
+        uses: https://eoelab.org:1027/actions/build-push-action@v6
+        with:
+          context: cuda/runtime
+          tags: eoelab.org:1027/${{ gitea.repository }}:cuda_runtime
+
+  CUDA_Devel:
+    runs-on: runner
+    needs: CUDA_Runtime
+    steps:
+      - name: checkout code
+        uses: https://eoelab.org:1027/actions/checkout@v4
+      - name: CUDA_Runtime build
+        uses: https://eoelab.org:1027/actions/build-push-action@v6
+        with:
+          context: cuda/devel
+          tags: eoelab.org:1027/${{ gitea.repository }}:cuda_devel
+
+  Push:
+    runs-on: runner
+    needs: [CUDA_Devel]
+    steps:
+      - name: login gitea_registry
+        uses: https://eoelab.org:1027/actions/login-action@v3
+        with:
+          registry: eoelab.org:1027
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWD }}
+      - name: push images to gitea_registry
+        run: docker image push "eoelab.org:1027/${{ gitea.repository }}" --all-tags
