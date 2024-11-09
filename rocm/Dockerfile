@@ -8,7 +8,7 @@ ARG AMDGPU_VERSION=6.2
 ENV PATH="${PATH}:/opt/rocm/bin" \
     DEBIAN_FRONTEND=noninteractive
 
-RUN sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list.d/ubuntu.sources && \
+RUN sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list && \
     apt-get update && apt-get install -y --no-install-recommends ca-certificates curl gnupg2 && \
     curl -sL http://repo.radeon.com/rocm/rocm.gpg.key | apt-key add - && \
     sh -c 'echo deb [arch=amd64] http://repo.radeon.com/rocm/apt/$ROCM_VERSION/ focal main > /etc/apt/sources.list.d/rocm.list' && \
