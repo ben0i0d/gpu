@@ -13,5 +13,5 @@ RUN sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.l
     curl -sL http://repo.radeon.com/rocm/rocm.gpg.key | apt-key add - && \
     sh -c 'echo deb [arch=amd64] http://repo.radeon.com/rocm/apt/$ROCM_VERSION/ focal main > /etc/apt/sources.list.d/rocm.list' && \
     sh -c 'echo deb [arch=amd64] https://repo.radeon.com/amdgpu/$AMDGPU_VERSION/ubuntu focal main > /etc/apt/sources.list.d/amdgpu.list' && \
-    apt-get update &&  apt-get install -y --no-install-recommends rocm && \
+    apt-get update &&  apt-get install -y --no-install-recommends rocm-ml-libraries rocm-ml-sdk && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
