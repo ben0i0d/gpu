@@ -12,7 +12,7 @@ English | [中文](README_CN.md)
 * ROCM: https://github.com/ROCm/ROCm-docker
 
 ## Platform
-* OS : debian 12 / ubuntu 24.04
+* OS : debian 12 / ubuntu 20.04
 * ARCH : x86_64
 
 ## Version
